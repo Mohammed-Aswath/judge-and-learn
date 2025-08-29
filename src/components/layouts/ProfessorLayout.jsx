@@ -1,9 +1,10 @@
 import React from 'react';
-import { AppBar, Toolbar, Typography, Drawer, List, ListItem, ListItemIcon, ListItemText, Box, IconButton } from '@mui/material';
+import { AppBar, Toolbar, Typography, Drawer, List, ListItem, ListItemIcon, ListItemText, Box, IconButton, Tooltip } from '@mui/material';
 import { Dashboard, Class, People, Assignment, Leaderboard, Create, Message, ExitToApp } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logoutUser } from '../../app/slices/authSlice';
+import { ThemeToggle } from '../ui/theme-toggle';
 
 const drawerWidth = 240;
 
@@ -35,13 +36,35 @@ const ProfessorLayout = ({ children }) => {
           ml: `${drawerWidth}px`,
         }}
       >
-        <Toolbar>
-          <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
+        <Toolbar sx={{ gap: 2 }}>
+          <Typography 
+            variant="h6" 
+            noWrap 
+            component="div" 
+            sx={{ 
+              flexGrow: 1, 
+              fontWeight: 600,
+              background: 'linear-gradient(45deg, #ffffff, #e2e8f0)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+            }}
+          >
             CodeJudge Professor Portal
           </Typography>
-          <IconButton color="inherit" onClick={handleLogout}>
-            <ExitToApp />
-          </IconButton>
+          <ThemeToggle />
+          <Tooltip title="Logout">
+            <IconButton 
+              color="inherit" 
+              onClick={handleLogout}
+              sx={{
+                '&:hover': {
+                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                },
+              }}
+            >
+              <ExitToApp />
+            </IconButton>
+          </Tooltip>
         </Toolbar>
       </AppBar>
       
@@ -58,15 +81,40 @@ const ProfessorLayout = ({ children }) => {
         anchor="left"
       >
         <Toolbar />
-        <List>
+        <List sx={{ px: 1 }}>
           {menuItems.map((item) => (
             <ListItem 
               button 
               key={item.text}
               onClick={() => navigate(item.path)}
+              sx={{
+                mb: 0.5,
+                borderRadius: 2,
+                '&:hover': {
+                  backgroundColor: (theme) => theme.palette.mode === 'dark' 
+                    ? 'rgba(255, 255, 255, 0.08)' 
+                    : 'rgba(0, 0, 0, 0.04)',
+                  transform: 'translateX(4px)',
+                },
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+              }}
             >
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.text} />
+              <ListItemIcon 
+                sx={{ 
+                  minWidth: 40,
+                  color: (theme) => theme.palette.primary.main,
+                }}
+              >
+                {item.icon}
+              </ListItemIcon>
+              <ListItemText 
+                primary={item.text}
+                sx={{
+                  '& .MuiTypography-root': {
+                    fontWeight: 500,
+                  },
+                }}
+              />
             </ListItem>
           ))}
         </List>
@@ -79,10 +127,16 @@ const ProfessorLayout = ({ children }) => {
           bgcolor: 'background.default',
           p: 3,
           width: `calc(100% - ${drawerWidth}px)`,
+          minHeight: '100vh',
+          background: (theme) => theme.palette.mode === 'dark'
+            ? 'radial-gradient(ellipse at top, rgba(37, 99, 235, 0.1) 0%, transparent 50%)'
+            : 'radial-gradient(ellipse at top, rgba(37, 99, 235, 0.05) 0%, transparent 50%)',
         }}
       >
         <Toolbar />
-        {children}
+        <Box sx={{ animation: 'fadeIn 0.5s ease-out' }}>
+          {children}
+        </Box>
       </Box>
     </Box>
   );

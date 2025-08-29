@@ -16,6 +16,7 @@ import {
   ListItemIcon,
   ListItemText,
   Divider,
+  Tooltip,
 } from '@mui/material';
 import {
   AccountCircle,
@@ -28,6 +29,7 @@ import {
   RecommendOutlined,
   MenuOutlined,
 } from '@mui/icons-material';
+import { ThemeToggle } from '../ui/theme-toggle';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { logoutUser } from '../../app/slices/authSlice';
@@ -83,9 +85,43 @@ const StudentLayout = ({ children }) => {
             key={item.text}
             onClick={() => navigate(item.path)}
             selected={location.pathname === item.path}
+            sx={{
+              mb: 0.5,
+              mx: 1,
+              borderRadius: 2,
+              '&:hover': {
+                backgroundColor: (theme) => theme.palette.mode === 'dark' 
+                  ? 'rgba(255, 255, 255, 0.08)' 
+                  : 'rgba(0, 0, 0, 0.04)',
+                transform: 'translateX(4px)',
+              },
+              '&.Mui-selected': {
+                backgroundColor: (theme) => theme.palette.primary.main + '20',
+                '&:hover': {
+                  backgroundColor: (theme) => theme.palette.primary.main + '30',
+                },
+              },
+              transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+            }}
           >
-            <ListItemIcon>{item.icon}</ListItemIcon>
-            <ListItemText primary={item.text} />
+            <ListItemIcon 
+              sx={{ 
+                minWidth: 40,
+                color: (theme) => location.pathname === item.path 
+                  ? theme.palette.primary.main 
+                  : 'inherit',
+              }}
+            >
+              {item.icon}
+            </ListItemIcon>
+            <ListItemText 
+              primary={item.text}
+              sx={{
+                '& .MuiTypography-root': {
+                  fontWeight: location.pathname === item.path ? 600 : 500,
+                },
+              }}
+            />
           </ListItem>
         ))}
       </List>
@@ -113,14 +149,26 @@ const StudentLayout = ({ children }) => {
             <MenuOutlined />
           </IconButton>
           
-          <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
+          <Typography 
+            variant="h6" 
+            noWrap 
+            component="div" 
+            sx={{ 
+              flexGrow: 1, 
+              fontWeight: 600,
+              background: 'linear-gradient(45deg, #ffffff, #e2e8f0)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+            }}
+          >
             Student Portal
           </Typography>
           
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-            <Typography variant="body2">
+            <Typography variant="body2" sx={{ fontWeight: 500 }}>
               {user?.name || 'Student'}
             </Typography>
+            <ThemeToggle />
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -196,11 +244,16 @@ const StudentLayout = ({ children }) => {
           p: 0,
           width: { sm: `calc(100% - 240px)` },
           minHeight: '100vh',
-          bgcolor: 'grey.50',
+          bgcolor: 'background.default',
+          background: (theme) => theme.palette.mode === 'dark'
+            ? 'radial-gradient(ellipse at top, rgba(37, 99, 235, 0.1) 0%, transparent 50%)'
+            : 'radial-gradient(ellipse at top, rgba(37, 99, 235, 0.05) 0%, transparent 50%)',
         }}
       >
         <Toolbar />
-        {children}
+        <Box sx={{ animation: 'fadeIn 0.5s ease-out', p: 3 }}>
+          {children}
+        </Box>
       </Box>
     </Box>
   );
