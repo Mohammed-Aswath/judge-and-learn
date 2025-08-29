@@ -36,7 +36,7 @@ import ProblemPage from '../features/student/ProblemPage';
 import StudentSubmissions from '../features/student/StudentSubmissions';
 import StudentHistory from '../features/student/StudentHistory';
 import StudentRecommendations from '../features/student/StudentRecommendations';
-import StudentProgress from '../features/student/StudentProgress';
+import StudentProgressPage from '../features/student/StudentProgress';
 import StudentLeaderboard from '../features/student/StudentLeaderboard';
 
 // Shared Pages
@@ -138,7 +138,7 @@ const AppRouter = () => {
                 <Route path="submissions" element={<StudentSubmissions />} />
                 <Route path="history" element={<StudentHistory />} />
                 <Route path="recommendations" element={<StudentRecommendations />} />
-                <Route path="progress" element={<StudentProgress />} />
+                <Route path="progress" element={<StudentProgressPage />} />
                 <Route path="leaderboard" element={<StudentLeaderboard />} />
                 <Route path="profile" element={<ProfilePage />} />
                 <Route path="" element={<Navigate to="dashboard" replace />} />
