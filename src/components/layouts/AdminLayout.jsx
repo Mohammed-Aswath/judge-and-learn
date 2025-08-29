@@ -3,7 +3,7 @@ import { AppBar, Toolbar, Typography, Drawer, List, ListItem, ListItemIcon, List
 import { Dashboard, School, People, Assignment, Assessment, Settings, ExitToApp } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { logout } from '../../app/slices/authSlice';
+import { logoutUser } from '../../app/slices/authSlice';
 
 const drawerWidth = 240;
 
@@ -21,7 +21,7 @@ const AdminLayout = ({ children }) => {
   ];
 
   const handleLogout = () => {
-    dispatch(logout());
+    dispatch(logoutUser());
     navigate('/login');
   };
 
