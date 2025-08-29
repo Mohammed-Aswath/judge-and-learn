@@ -176,6 +176,5 @@ const StudentDashboard = () => {
       </div>
     </div>
   );
-};
 
 export default StudentDashboard;
