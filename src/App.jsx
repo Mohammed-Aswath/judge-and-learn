@@ -6,7 +6,7 @@ import { ThemeProvider as MuiThemeProvider, createTheme } from '@mui/material/st
 import { CssBaseline } from '@mui/material';
 import { store } from './app/store';
 import AppRouter from './app/AppRouter';
-import { ThemeProvider } from './components/ThemeProvider';
+import { ThemeProvider, useTheme } from './components/ThemeProvider';
 
 const queryClient = new QueryClient();
 
@@ -131,18 +131,25 @@ const getTheme = (isDark) => createTheme({
   },
 });
 
+// Component to handle the theme integration
+const ThemedApp = () => {
+  const { isDark } = useTheme();
+  
+  return (
+    <MuiThemeProvider theme={getTheme(isDark)}>
+      <CssBaseline />
+      <BrowserRouter>
+        <AppRouter />
+      </BrowserRouter>
+    </MuiThemeProvider>
+  );
+};
+
 const App = () => (
   <Provider store={store}>
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
-        {({ isDark }) => (
-          <MuiThemeProvider theme={getTheme(isDark)}>
-            <CssBaseline />
-            <BrowserRouter>
-              <AppRouter />
-            </BrowserRouter>
-          </MuiThemeProvider>
-        )}
+        <ThemedApp />
       </ThemeProvider>
     </QueryClientProvider>
   </Provider>
